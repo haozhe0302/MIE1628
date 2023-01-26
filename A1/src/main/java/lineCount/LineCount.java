@@ -33,15 +33,15 @@ public class LineCount {
     }
 
     public static void main(String[] args) throws Exception {
-        JobConf conf = new JobConf(LinesCount.class);
+        JobConf conf = new JobConf(LineCount.class);
         conf.setJobName("wordcount");
 
         conf.setOutputKeyClass(Text.class);
         conf.setOutputValueClass(IntWritable.class);
 
-        conf.setMapperClass(LinesCount.Map.class);
-        conf.setCombinerClass(LinesCount.Reduce.class);
-        conf.setReducerClass(LinesCount.Reduce.class);
+        conf.setMapperClass(LineCount.Map.class);
+        conf.setCombinerClass(LineCount.Reduce.class);
+        conf.setReducerClass(LineCount.Reduce.class);
 
         conf.setInputFormat(TextInputFormat.class);
         conf.setOutputFormat(TextOutputFormat.class);
