@@ -18,7 +18,9 @@ import org.apache.hadoop.util.*;
 
 
 public class KMeans extends Configured implements Tool{
+    // Use maximum iterations = 20 as required
     private final static int maxIterations = 20;
+    // Modify K value to 3 or 6 when needed
     private final static int K = 3;
 
     public static class Point implements Comparable<Point> {
