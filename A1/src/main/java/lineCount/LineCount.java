@@ -1,7 +1,7 @@
 package lineCount;
+
 import java.io.IOException;
 import java.util.Iterator;
-
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
@@ -12,18 +12,17 @@ public class LineCount {
     public static class Map extends MapReduceBase implements Mapper<LongWritable, Text, Text, IntWritable> {
 
         private final static IntWritable one = new IntWritable(1);
+        private final Text line = new Text("linecount");
 
         public void map(LongWritable key, Text value, OutputCollector<Text, IntWritable> output, Reporter reporter)
                 throws IOException {
-            Text word = new Text("line count");
-            output.collect(word,one);
+            output.collect(line, one);
         }
     }
 
     public static class Reduce extends MapReduceBase implements Reducer<Text, IntWritable, Text, IntWritable> {
 
-        public void reduce(Text key, Iterator<IntWritable> values, OutputCollector<Text, IntWritable> output,
-                           Reporter reporter) throws IOException {
+        public void reduce(Text key, Iterator<IntWritable> values, OutputCollector<Text, IntWritable> output, Reporter reporter) throws IOException {
             int sum = 0;
             while (values.hasNext()) {
                 sum += values.next().get();
@@ -34,7 +33,7 @@ public class LineCount {
 
     public static void main(String[] args) throws Exception {
         JobConf conf = new JobConf(LineCount.class);
-        conf.setJobName("wordcount");
+        conf.setJobName("linecount");
 
         conf.setOutputKeyClass(Text.class);
         conf.setOutputValueClass(IntWritable.class);
