@@ -17,7 +17,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.*;
 
 
-public class KMeans extends Configured implements Tool{
+public class KMeans3 extends Configured implements Tool{
     // Use maximum iterations = 20 as required
     private final static int maxIterations = 20;
     // Modify K value to 3 or 6 when needed
@@ -186,7 +186,7 @@ public class KMeans extends Configured implements Tool{
 
         HashSet<Integer> set1 = new HashSet<>();
         HashSet<Integer> set2 = new HashSet<>();
-        for(int i = 1; i <= KMeans.K; i++){
+        for(int i = 1; i <= KMeans3.K; i++){
             int rand1 = random.nextInt(max-min)+min;
             int rand2 = random.nextInt(max-min)+min;
             while(set1.contains(rand1) || set2.contains(rand2) ){
@@ -215,7 +215,7 @@ public class KMeans extends Configured implements Tool{
         int i = 1;
         // Use maximum iterations = 20
         while(i <= maxIterations){
-            ToolRunner.run(conf, new KMeans(), args);
+            ToolRunner.run(conf, new KMeans3(), args);
             i++;
         }
         long etime = System.currentTimeMillis();
@@ -231,7 +231,7 @@ public class KMeans extends Configured implements Tool{
         Job job = Job.getInstance(conf, "KMeans");
         FileSystem fs=FileSystem.get(conf);
 
-        job.setJarByClass(KMeans.class);
+        job.setJarByClass(KMeans3.class);
         job.setMapperClass(PointsMapper.class);
         job.setReducerClass(PointsReducer.class);
 
