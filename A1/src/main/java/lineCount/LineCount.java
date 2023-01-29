@@ -9,19 +9,20 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.*;
 
 public class LineCount {
+    // Map
     public static class Map extends MapReduceBase implements Mapper<LongWritable, Text, Text, IntWritable> {
-
         private final static IntWritable one = new IntWritable(1);
         private final Text line = new Text("linecount");
 
         public void map(LongWritable key, Text value, OutputCollector<Text, IntWritable> output, Reporter reporter)
                 throws IOException {
+            // Count each line as an object
             output.collect(line, one);
         }
     }
 
+    // Reduce
     public static class Reduce extends MapReduceBase implements Reducer<Text, IntWritable, Text, IntWritable> {
-
         public void reduce(Text key, Iterator<IntWritable> values, OutputCollector<Text, IntWritable> output, Reporter reporter) throws IOException {
             int sum = 0;
             while (values.hasNext()) {

@@ -24,10 +24,11 @@ public class KMeans extends Configured implements Tool{
     private final static int K = 3;
 
     public static class Point implements Comparable<Point> {
-        private double x;
-        private double y;
+        private final double x;
+        private final double y;
 
         public Point(String s) {
+            // Split x, y from point data by ','
             String[] strings = s.split(",");
             this.x = Double.parseDouble(strings[0]);
             this.y = Double.parseDouble(strings[1]);
@@ -47,8 +48,8 @@ public class KMeans extends Configured implements Tool{
         }
 
         public static double calculateDistance(Point point1, Point point2) {
-            Double x_diff = point1.getX() - point2.getX();
-            Double y_diff = point1.getY() - point2.getY();
+            double x_diff = point1.getX() - point2.getX();
+            double y_diff = point1.getY() - point2.getY();
             return Math.sqrt(Math.pow(x_diff,2) + Math.pow(y_diff,2));
         }
 
@@ -59,8 +60,9 @@ public class KMeans extends Configured implements Tool{
 
             return compareX != 0 ? compareX : compareY;
         }
+
         public String toString() {
-            return Double.toString(this.x) + "," + Double.toString(this.y);
+            return this.x + "," + this.y;
         }
 
         public static void writePointsToFile(List<Point> points, Configuration conf) throws IOException{
@@ -104,6 +106,7 @@ public class KMeans extends Configured implements Tool{
             this.centers = arrayList;
         }
 
+        // Map
         @Override
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             // input -> key: charater offset, value -> a point (in Text)
@@ -132,13 +135,14 @@ public class KMeans extends Configured implements Tool{
 
         public List<Point> new_centers = new ArrayList<>();
 
-        public static enum Counter {
+        public enum Counter {
             CONVERGED
         }
 
         @Override
         public void setup(Context context) {}
 
+        // Reduce
         @Override
         public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
             // Input: key -> centroid id/centroid , value -> list of points
@@ -157,7 +161,7 @@ public class KMeans extends Configured implements Tool{
             // new_centroids.add() (store updated cetroid in a variable)
             double new_center_X = sum_of_X / count;
             double new_center_Y = sum_of_Y / count;
-            Point center = new Point(Double.toString(new_center_X) + "," + Double.toString(new_center_Y));
+            Point center = new Point(new_center_X + "," + new_center_Y);
             new_centers.add(center);
 
             context.write(key, new Text(center.toString()));
@@ -174,7 +178,7 @@ public class KMeans extends Configured implements Tool{
     }
 
 
-    private static List<Point> initiateCenterPoints(int K) {
+    private static List<Point> initiateCenterPoints() {
         List<Point> list = new ArrayList<>();
         Random random = new Random();
         int min = -50;
@@ -182,7 +186,7 @@ public class KMeans extends Configured implements Tool{
 
         HashSet<Integer> set1 = new HashSet<>();
         HashSet<Integer> set2 = new HashSet<>();
-        for(int i = 1; i <= K; i++){
+        for(int i = 1; i <= KMeans.K; i++){
             int rand1 = random.nextInt(max-min)+min;
             int rand2 = random.nextInt(max-min)+min;
             while(set1.contains(rand1) || set2.contains(rand2) ){
@@ -204,7 +208,7 @@ public class KMeans extends Configured implements Tool{
         Path center_path = new Path("centroid/cen.seq");
         conf.set("centroid.path", center_path.toString());
 
-        Point.writePointsToFile(initiateCenterPoints(K), conf);
+        Point.writePointsToFile(initiateCenterPoints(), conf);
 
         long stime = System.currentTimeMillis();
 
