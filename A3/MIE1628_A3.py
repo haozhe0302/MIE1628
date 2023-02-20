@@ -78,9 +78,11 @@ intCounts = intCountsPre2.sortByKey(True)
 barRDD = intCounts.map(lambda word: (word[1], word[0]))
 
 df_selected_protocol_type = barRDD.toDF(["protocol_type", "count"])
-pd = df_selected_protocol_type.toPandas()
-pd.set_index('protocol_type', inplace=True)
-pd.plot(kind="bar")
+pd_selected_protocol_type = df_selected_protocol_type.toPandas()
+pd_selected_protocol_type.sort_values(by=['count'], inplace=True)
+display(pd_selected_protocol_type)
+pd_selected_protocol_type.set_index('protocol_type', inplace=True)
+pd_selected_protocol_type.plot(kind="bar")
 
 
 intRDD = data.map(lambda line: (line[2], 1))
@@ -90,9 +92,11 @@ intCounts = intCountsPre2.sortByKey(True)
 barRDD = intCounts.map(lambda word: (word[1], word[0]))
 
 df_selected_service = barRDD.toDF(["service", "count"])
-pd = df_selected_service.toPandas()
-pd.set_index('service', inplace=True)
-pd.plot(kind="bar", figsize=(20,5))
+pd_selected_service = df_selected_service.toPandas()
+pd_selected_service.sort_values(by=['count'], inplace=True)
+display(pd_selected_service)
+pd_selected_service.set_index('service', inplace=True)
+pd_selected_service.plot(kind="bar", figsize=(20,5))
 
 # COMMAND ----------
 
