@@ -100,18 +100,6 @@ pd_selected_service.plot(kind="bar", figsize=(20,5))
 
 # COMMAND ----------
 
-df_selected_protocol_type = df_selected.groupBy("protocol_type").count()
-df_selected_protocol_type = df_selected_protocol_type.sort("count")
-display(df_selected_protocol_type)
-
-# COMMAND ----------
-
-df_selected_service = df_selected.groupBy("service").count()
-df_selected_service = df_selected_service.sort("count")
-display(df_selected_service)
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ## 7.
 # MAGIC Do a further exploratory data analysis, including other columns of this dataset and plot graphs. Plot at least 3 different charts/plots and explain them.
@@ -139,7 +127,7 @@ intCounts = intCountsPre2.sortByKey(True)
 barRDD = intCounts.map(lambda word: (word[1], word[0]))
 
 df_label = barRDD.toDF(["label", "count"])
-pd = df_label.toPandas().head(20)
+pd = df_label.toPandas().tail(20)
 pd.set_index('label', inplace=True)
 pd.plot(kind="bar", figsize=(20,5))
 display(df_label)
@@ -202,8 +190,8 @@ from sklearn import svm
 lsvc = svm.LinearSVC(dual=False)
 lsvc.fit(X_train, y_train)
 y_pred_lsvc = lsvc.predict(X_test.iloc[:,:41])
-print("Linear SVC Train Accruacy: ", lsvc.score(X_train, y_train))
-print("Linear SVC Test Accruacy: ", lsvc.score(X_test, y_test))
+print("Linear SVC Train Accuracy: ", lsvc.score(X_train, y_train))
+print("Linear SVC Test Accuracy: ", lsvc.score(X_test, y_test))
 
 # COMMAND ----------
 
