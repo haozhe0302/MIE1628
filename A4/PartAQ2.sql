@@ -1,0 +1,20 @@
+CREATE TABLE jobs (
+  year int,
+  occupation varchar(250),
+  major_category varchar(250),
+  minor_category varchar(250),
+  total_workers int,
+  workers_male int,
+  workers_female int,
+  percent_female decimal(20,5),
+  total_earnings int,
+  total_earnings_male int,
+  total_earnings_female int,
+  wage_percent_of_male decimal(20,5),
+  total_full_time decimal(20,5),
+  total_part_time decimal(20,5),
+  full_time_female decimal(20,5),
+  part_time_female decimal(20,5),
+  full_time_male decimal(20,5),
+  part_time_male decimal(20,5)
+)
